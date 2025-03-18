@@ -4,6 +4,7 @@ use App\Http\Controllers\AuthController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\QuestController;
+use App\Http\Controllers\UserController;
 
 /*
 |--------------------------------------------------------------------------
@@ -15,15 +16,23 @@ use App\Http\Controllers\QuestController;
 | is assigned the "api" middleware group. Enjoy building your API!
 |
 */
+Route::post('/auth/sign-in', [AuthController::class, 'login']);
 
-Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
-    return $request->user();
+
+// utility routes
+Route::middleware('auth:sanctum')->group(function () {
+    
+    Route::get('/auth/sign-out', [AuthController::class, 'logout']);
+
+    Route::get('/quests', [QuestController::class, 'index']);
+    Route::post('/quests', [QuestController::class, 'store']);
+    Route::delete('/quests', [QuestController::class, 'destroy']);
+    Route::patch('/quests', [QuestController::class, 'edit']);
+
+    Route::get('/users', [UserController::class, 'index']);
+    Route::post('/users', [UserController::class, 'store']);
+    Route::delete('/users', [UserController::class, 'destroy']);    
+    Route::patch('/users', [UserController::class, 'edit']);
 });
 
-Route::post('/auth/sign-in', [AuthController::class, 'login']);
-Route::get('/auth/sign-out', [AuthController::class, 'logout'])->middleware('auth:sanctum');
 
-Route::get('/quests', [QuestController::class, 'index']);
-Route::post('/quests', [QuestController::class, 'store']);
-Route::delete('/quests', [QuestController::class, 'destroy']);
-Route::patch('/quests', [QuestController::class, 'edit']);

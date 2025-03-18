@@ -65,7 +65,7 @@ class UserController extends Controller
         }
     }
 
-    public function show(Request $request){
+    public function index(Request $request){
         try{
             if($request->id){
                 $user = User::find($request->id);
