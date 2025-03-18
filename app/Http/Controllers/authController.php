@@ -2,11 +2,10 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
-class authController extends Controller
+class AuthController extends Controller
 {
 
 public function login(Request $request){
@@ -19,5 +18,10 @@ public function login(Request $request){
             return response()->json(['status' => true, "data" => $userData], 200);
         }
         return response()->json(['message' => 'Unauthorized'], 401);
+    }
+
+    public function logout(){
+        Auth::user()->tokens()->delete();
+        return response()->json(['message' => 'Logged out'], 200);
     }
 }
