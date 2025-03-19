@@ -3,8 +3,10 @@
 use App\Http\Controllers\AuthController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
+
 use App\Http\Controllers\QuestController;
 use App\Http\Controllers\UserController;
+use App\Http\Controllers\ExamController;
 
 /*
 |--------------------------------------------------------------------------
@@ -33,6 +35,11 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::post('/users', [UserController::class, 'store']);
     Route::delete('/users', [UserController::class, 'destroy']);    
     Route::patch('/users', [UserController::class, 'edit']);
+
+    Route::get('/exams', [ExamController::class, 'index']);
+    Route::post('/exams', [ExamController::class, 'store']);
+    Route::delete('/exams', [ExamController::class, 'destroy']);
+    Route::patch('/exams', [ExamController::class, 'edit']);
 });
 
 

@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 use App\Models\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
 
 class UserController extends Controller
@@ -25,9 +26,14 @@ class UserController extends Controller
             $user = new User();
             $user->name = $request->name;
             $user->username = $request->username;
-            $user->password = $request->password;
+            $user->password = Hash::make($request->password);
             $user->exam = $request->exam;
             $user->save();
+
+            return response()->json([
+                'status' => true,
+                'data' => $user
+            ]);
 
         }catch(\Throwable $e){
             return response()->json([
@@ -54,9 +60,14 @@ class UserController extends Controller
             $user = User::find($request->id);
             $user->name = $request->name;
             $user->username = $request->username;
-            $user->password = $request->password;
+            $user->password = Hash::make($request->password);
             $user->exam = $request->exam;
             $user->save();
+
+            return response()->json([
+                'status' => true,
+                'data' => $user
+            ]);
         }catch(\Throwable $e){
             return response()->json([
                 'status' => false,
