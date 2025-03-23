@@ -21,4 +21,9 @@ class ExamModel extends Model
         'access',
         'expired',
     ];
+
+    public function quest()
+    {
+        return $this->hasMany(BundlerModel::class, 'id_exam', 'uuid');
+    }
 }

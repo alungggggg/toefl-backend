@@ -1,6 +1,8 @@
 <?php
 
 namespace App\Http\Controllers;
+
+use App\Models\BundlerModel;
 use App\Models\ExamModel;
 use Illuminate\Http\Request;
 
@@ -10,15 +12,31 @@ class ExamController extends Controller
     {
         try {
             if($request->id) {
+                $exam = ExamModel::find($request->id);
+                $exam->quest = BundlerModel::where('id_exam', $exam->uuid)->with(["quest", "quest.options"])->get("id_quest")->pluck("quest");
                 return response()->json([
                     'status' => true,
-                    'data' => ExamModel::find($request->id),
+                    'data' => $exam,
                 ]);
             }
+            $data = ExamModel::with('quest.quest.options')->get()->map(function ($exam) {
+                return [
+                    'uuid' => $exam->uuid,
+                    'name' => $exam->name,
+                    'code' => $exam->code,
+                    'access' => $exam->access,
+                    'expired' => $exam->expired,
+                    'bundler' => $exam->quest->map(function ($bundler) use ($exam) {
+                        return [
+                            $bundler->quest, 
+                        ];
+                    }),
+                ];
+            });
 
             return response()->json([
                 'status' => true,
-                'data' => ExamModel::all()
+                'data' => $data
             ]);
         } catch (\Throwable $e) {
             return response()->json([
