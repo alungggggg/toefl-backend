@@ -14,6 +14,12 @@ class ExamController extends Controller
             if($request->id) {
                 $exam = ExamModel::find($request->id);
                 $exam->quest = BundlerModel::where('id_exam', $exam->uuid)->with(["quest", "quest.options"])->get("id_quest")->pluck("quest");
+                if(!$exam) {
+                    return response()->json([
+                        'status' => false,
+                        'message' => 'Exam not found'
+                    ], 404);
+                }
                 return response()->json([
                     'status' => true,
                     'data' => $exam,

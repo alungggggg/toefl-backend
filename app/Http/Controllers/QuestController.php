@@ -13,9 +13,16 @@ class QuestController extends Controller
     {
         try {
             if($request->id) {
+                $data = QuestModel::find($request->id)->with("options")->get();
+                if(!$data) {
+                    return response()->json([
+                        'status' => false,
+                        'message' => 'Quest not found'
+                    ], 404);
+                }
                 return response()->json([
                     'status' => true,
-                    'data' => QuestModel::find($request->id)->with("options")->get(),
+                    'data' => $data,
                 ]);
             }
 

@@ -80,6 +80,12 @@ class UserController extends Controller
         try{
             if($request->id){
                 $user = User::find($request->id);
+                if(!$user){
+                    return response()->json([
+                        'status' => false,
+                        'message' => 'User not found'
+                    ], 404);
+                }
                 return response()->json([
                     'status' => true,
                     'data' => $user
