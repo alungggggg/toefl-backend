@@ -43,7 +43,7 @@ class UserController extends Controller
         }
     }
 
-    public function destory(Request $request){
+    public function destroy(Request $request){
         try{
             $user = User::find($request->id);
             $user->delete();
