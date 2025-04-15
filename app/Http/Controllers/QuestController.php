@@ -13,33 +13,38 @@ class QuestController extends Controller
     {
         try {
             if($request->id) {
-                $data = QuestModel::find($request->id)->with("options")->first();
-                if(!$data) {
+                $quest = QuestModel::find($request->id)->with("options")->first();
+                if(!$quest) {
                     return response()->json([
                         'status' => false,
                         'message' => 'Quest not found'
                     ], 404);
                 }
 
-                
                 return response()->json([
                     'status' => true,
-                    'data' => $data,
+                    'data' => $quest
                 ]);
             }
 
-            if($request->type) {
-                $data = QuestModel::where("type", $request->type)->with("options")->get();
-                if(!$data) {
+            if($request->type){
+                $quest = QuestModel::where("type", $request->type)->with("options")->get();
+                if(!$quest) {
                     return response()->json([
                         'status' => false,
                         'message' => 'Quest not found'
                     ], 404);
                 }
+                return response()->json([
+                    'status' => true,
+                    'data' => $quest
+                ]);
             }
+
 
             return response()->json([
                 'status' => true,
+                // 'data' => 
                 'data' => QuestModel::with("options")->get()
             ]);
         } catch (\Throwable $e) {
