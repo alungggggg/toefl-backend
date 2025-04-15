@@ -104,6 +104,8 @@ class ExamController extends Controller
             $exam = ExamModel::find($request->id);
             $exam->delete();
 
+            BundlerModel::where('id_exam', $exam->uuid)->delete();
+
             return response()->json([
                 'status' => true,
                 'message' => 'Exam deleted successfully'
