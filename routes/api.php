@@ -20,6 +20,8 @@ use App\Http\Controllers\ExamController;
 */
 Route::post('/auth/sign-in', [AuthController::class, 'login']);
 
+Route::get('/quests/{type}', [QuestController::class, 'getByType']);
+
 
 // utility routes
 Route::middleware('auth:sanctum')->group(function () {
