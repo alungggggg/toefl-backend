@@ -9,28 +9,6 @@ use Ramsey\Uuid\Uuid;
 
 class QuestController extends Controller
 {
-
-    public function getByType($type)
-    {
-        try {
-            $data = QuestModel::where("type", $type)->with("options")->get();
-            if(!$data) {
-                return response()->json([
-                    'status' => false,
-                    'message' => 'Quest not found'
-                ], 404);
-            }
-            return response()->json([
-                'status' => true,
-                'data' => $data,
-            ]);
-        } catch (\Throwable $e) {
-            return response()->json([
-                'status' => false,
-                'error' => $e->getMessage()
-            ], 500);
-        }
-    }
     public function index(Request $request)
     {
         try {
@@ -42,10 +20,22 @@ class QuestController extends Controller
                         'message' => 'Quest not found'
                     ], 404);
                 }
+
+                
                 return response()->json([
                     'status' => true,
                     'data' => $data,
                 ]);
+            }
+
+            if($request->type) {
+                $data = QuestModel::where("type", $request->type)->with("options")->get();
+                if(!$data) {
+                    return response()->json([
+                        'status' => false,
+                        'message' => 'Quest not found'
+                    ], 404);
+                }
             }
 
             return response()->json([
