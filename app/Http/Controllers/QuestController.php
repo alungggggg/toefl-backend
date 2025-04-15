@@ -77,7 +77,7 @@ class QuestController extends Controller
             $quest->weight = $request->weight;
             $quest->options = $uuid;
             foreach ($request->options as $option) {
-                Self::optionStore($uuid, $option["option"]);
+                Self::optionStore($uuid, $option["options"]);
             }
             $quest->save();
 

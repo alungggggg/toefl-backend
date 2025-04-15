@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use Ramsey\Uuid\Uuid;
 use App\Models\ScoreModel;
 use Illuminate\Http\Request;
 
@@ -40,7 +41,7 @@ class ScoreController extends Controller
     {
         try {
             $score = new ScoreModel();
-            $score->uuid = $request->uuid;
+            $score->uuid = Uuid::uuid4();;
             $score->id_user = $request->id_user;
             $score->score = $request->score;
             $score->status = $request->status;

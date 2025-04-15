@@ -2,8 +2,9 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\BundlerModel;
+use Ramsey\Uuid\Uuid;
 use App\Models\ExamModel;
+use App\Models\BundlerModel;
 use Illuminate\Http\Request;
 
 class ExamController extends Controller
@@ -56,6 +57,7 @@ class ExamController extends Controller
     {
         try {
             $exam = new ExamModel();
+            $exam->uuid = Uuid::uuid4();;
             $exam->name = $request->name;
             $exam->quest_id = $request->quest_id;
             $exam->code = $request->code;
