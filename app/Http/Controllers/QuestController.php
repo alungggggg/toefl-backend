@@ -130,7 +130,7 @@ class QuestController extends Controller
 
     public function edit(Request $request){
         try {
-            $quest = QuestModel::find($request->id);            
+            $quest = QuestModel::find($request->uuid);            
             $quest->question = $request->question;
             $quest->type = $request->type;
             $quest->answer = $request->answer;
@@ -138,7 +138,7 @@ class QuestController extends Controller
             $quest->save(); 
 
             foreach ($request->options as $option) {
-                Self::optionEdit($request->id, $option["options"]);
+                Self::optionEdit($request->uuid, $option["options"]);
             }
 
 
