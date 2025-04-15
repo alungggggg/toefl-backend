@@ -13,7 +13,7 @@ class QuestController extends Controller
     {
         try {
             if($request->id) {
-                $data = QuestModel::find($request->id)->with("options")->get();
+                $data = QuestModel::find($request->id)->with("options")->first();
                 if(!$data) {
                     return response()->json([
                         'status' => false,
