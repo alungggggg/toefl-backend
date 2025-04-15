@@ -130,7 +130,7 @@ class QuestController extends Controller
             $quest->type = $request->type;
             $quest->answer = $request->answer;
             $quest->weight = $request->weight;
-            $quest->save();
+            $quest->save(); 
 
             foreach ($request->options as $option) {
                 Self::optionEdit($request->id, $option["option"]);

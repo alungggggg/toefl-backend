@@ -33,7 +33,6 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::post('/quests', [QuestController::class, 'store']);
     Route::delete('/quests', [QuestController::class, 'destroy']);
     Route::patch('/quests', [QuestController::class, 'edit']);
-    Route::get('/quests/{type}', [QuestController::class, 'getByType']);
     
     Route::get('/users', [UserController::class, 'index']);
     Route::post('/users', [UserController::class, 'store']);
