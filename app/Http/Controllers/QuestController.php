@@ -13,7 +13,7 @@ class QuestController extends Controller
     {
         try {
             if($request->id) {
-                $quest = QuestModel::find($request->id)->with("options")->get();
+                $quest = QuestModel::where( "uuid",$request->id,)->with("options")->first();
                 if(!$quest) {
                     return response()->json([
                         'status' => false,
