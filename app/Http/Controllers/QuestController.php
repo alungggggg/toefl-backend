@@ -138,7 +138,7 @@ class QuestController extends Controller
             $quest->save(); 
 
             foreach ($request->options as $option) {
-                Self::optionEdit($request->id, $option["option"]);
+                Self::optionEdit($request->id, $option["options"]);
             }
 
 
