@@ -121,7 +121,6 @@ class QuestController extends Controller
     }
 
     public function optionEdit($id, $raw){
-        OptionModel::where("id_question", $id)->delete();
         $option = new OptionModel();
         $option->id_question = $id;
         $option->options = $raw;
@@ -136,6 +135,9 @@ class QuestController extends Controller
             $quest->answer = $request->answer;
             $quest->weight = $request->weight;
             $quest->save(); 
+
+            OptionModel::where("id_question", $request->uuid)->delete();
+
 
             foreach ($request->options as $option) {
                 Self::optionEdit($request->uuid, $option["options"]);
