@@ -122,6 +122,7 @@ class QuestController extends Controller
 
     public function optionEdit($id, $raw){
         $option = new OptionModel();
+        $option->uuid = Uuid::uuid4();
         $option->id_question = $id;
         $option->options = $raw;
         $option->save();
@@ -146,7 +147,7 @@ class QuestController extends Controller
 
             return response()->json([
                 'status' => true,
-                'message' => 'Quest created successfully'
+                'message' => 'Quest edited successfully'
             ]);
         } catch (\Throwable $e) {
             return response()->json([
