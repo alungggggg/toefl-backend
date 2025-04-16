@@ -10,8 +10,15 @@ class BundlerModel extends Model
 {
     use HasFactory;
     protected $table = 'bundler';
+    protected $keyType = 'string';
+    protected $primaryKey = 'uuid';
+    public $timestamps = false;
+    public $incrementing = false;
+
+    
 
     protected $fillable = [
+        'uuid',
         'id_exam',
         'id_quest',
     ];

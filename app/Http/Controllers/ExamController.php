@@ -59,8 +59,7 @@ class ExamController extends Controller
             $exam = new ExamModel();
             $exam->uuid = Uuid::uuid4();;
             $exam->name = $request->name;
-            $exam->quest_id = $request->quest_id;
-            $exam->code = $request->code;
+            $exam->code = self::generateRandomCode(8);
             $exam->access = $request->access;
             $exam->expired = $request->expired;
             $exam->save();
@@ -77,13 +76,23 @@ class ExamController extends Controller
         }
     }
 
+    function generateRandomCode($length = 10) {
+        $characters = '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ';
+        $charactersLength = strlen($characters);
+        $randomCode = '';
+        
+        for ($i = 0; $i < $length; $i++) {
+            $randomCode .= $characters[rand(0, $charactersLength - 1)];
+        }
+    
+        return $randomCode;
+    }
+
     public function edit(Request $request)
     {
         try {
-            $exam = ExamModel::find($request->id);
+            $exam = ExamModel::find($request->uuid);
             $exam->name = $request->name;
-            $exam->quest_id = $request->quest_id;
-            $exam->code = $request->code;
             $exam->access = $request->access;
             $exam->expired = $request->expired;
             $exam->save();
@@ -103,7 +112,13 @@ class ExamController extends Controller
     public function destroy(Request $request)
     {
         try {
-            $exam = ExamModel::find($request->id);
+            $exam = ExamModel::find($request->uuid);
+            if(!$exam){
+                return response()->json([
+                    'status' => false,
+                    'message' => 'Exam not found'
+                ], 404);
+            }
             $exam->delete();
 
             BundlerModel::where('id_exam', $exam->uuid)->delete();

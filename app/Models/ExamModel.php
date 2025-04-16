@@ -15,8 +15,8 @@ class ExamModel extends Model
     public $timestamps = false;
 
     protected $fillable = [
+        'uuid',
         'name',
-        'quest_id',
         'code',
         'access',
         'expired',

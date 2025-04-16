@@ -20,8 +20,10 @@ use App\Http\Controllers\ExamController;
 */
 Route::post('/auth/sign-in', [AuthController::class, 'login']);
 
-Route::post('/bundler', [BundlerController::class, 'store']);
-Route::delete('/bundler', [BundlerController::class, 'destroy']);
+Route::get('/exams', [ExamController::class, 'index']);
+Route::post('/exams', [ExamController::class, 'store']);
+Route::delete('/exams', [ExamController::class, 'destroy']);
+Route::patch('/exams', [ExamController::class, 'edit']);
 
 
 // utility routes
@@ -39,10 +41,7 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::delete('/users', [UserController::class, 'destroy']);    
     Route::patch('/users', [UserController::class, 'edit']);
     
-    Route::get('/exams', [ExamController::class, 'index']);
-    Route::post('/exams', [ExamController::class, 'store']);
-    Route::delete('/exams', [ExamController::class, 'destroy']);
-    Route::patch('/exams', [ExamController::class, 'edit']);
+    
 
     Route::post('/bundler', [BundlerController::class, 'store']);
     Route::delete('/bundler', [BundlerController::class, 'destroy']);
