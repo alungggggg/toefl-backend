@@ -1,12 +1,13 @@
 <?php
 
-use App\Http\Controllers\AuthController;
-use App\Http\Controllers\BundlerController;
 use Illuminate\Support\Facades\Route;
-
-use App\Http\Controllers\QuestController;
-use App\Http\Controllers\UserController;
+use App\Http\Controllers\AuthController;
 use App\Http\Controllers\ExamController;
+
+use App\Http\Controllers\UserController;
+use App\Http\Controllers\QuestController;
+use App\Http\Controllers\ScoreController;
+use App\Http\Controllers\BundlerController;
 
 /*
 |--------------------------------------------------------------------------
@@ -20,11 +21,10 @@ use App\Http\Controllers\ExamController;
 */
 Route::post('/auth/sign-in', [AuthController::class, 'login']);
 
-Route::get('/exams', [ExamController::class, 'index']);
-Route::post('/exams', [ExamController::class, 'store']);
-Route::delete('/exams', [ExamController::class, 'destroy']);
-Route::patch('/exams', [ExamController::class, 'edit']);
-
+Route::get('/score', [ScoreController::class, 'index']);
+Route::post('/score', [ScoreController::class, 'store']);
+Route::patch('/score', [ScoreController::class, 'edit']);
+Route::delete('/score', [ScoreController::class, 'destroy']);
 
 // utility routes
 Route::middleware('auth:sanctum')->group(function () {
@@ -40,8 +40,12 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::post('/users', [UserController::class, 'store']);
     Route::delete('/users', [UserController::class, 'destroy']);    
     Route::patch('/users', [UserController::class, 'edit']);
-    
-    
+
+    Route::get('/exams', [ExamController::class, 'index']);
+    Route::post('/exams', [ExamController::class, 'store']);
+    Route::delete('/exams', [ExamController::class, 'destroy']);
+    Route::patch('/exams', [ExamController::class, 'edit']);
+        
 
     Route::post('/bundler', [BundlerController::class, 'store']);
     Route::delete('/bundler', [BundlerController::class, 'destroy']);

@@ -41,14 +41,16 @@ class ScoreController extends Controller
     {
         try {
             $score = new ScoreModel();
-            $score->uuid = Uuid::uuid4();;
-            $score->id_user = $request->id_user;
+            $score->uuid = Uuid::uuid4();
+            $score->username = $request->username;
+            $score->name = $request->name;
             $score->score = $request->score;
             $score->status = $request->status;
             $score->save();
 
             return response()->json([
                 'status' => true,
+                'message' => "Score Successfully Created!",
                 'data' => $score
             ]);
         } catch (\Throwable $e) {
@@ -62,7 +64,7 @@ class ScoreController extends Controller
     public function destroy(Request $request)
     {
         try {
-            $score = ScoreModel::find($request->id);
+            $score = ScoreModel::find($request->uuid);
             if(!$score) {
                 return response()->json([
                     'status' => false,
@@ -72,7 +74,7 @@ class ScoreController extends Controller
             $score->delete();
             return response()->json([
                 'status' => true,
-                'message' => 'Score deleted'
+                'message' => 'Score successfully deleted'
             ]);
         } catch (\Throwable $e) {
             return response()->json([
@@ -84,21 +86,22 @@ class ScoreController extends Controller
 
     public function edit(Request $request){
         try {
-            $score = ScoreModel::find($request->id);
+            $score = ScoreModel::find($request->uuid);
             if(!$score) {
                 return response()->json([
                     'status' => false,
                     'message' => 'Score not found'
                 ], 404);
             }
-            $score->uuid = $request->uuid;
-            $score->id_user = $request->id_user;
+            $score->username = $request->username;
+            $score->name = $request->name;
             $score->score = $request->score;
             $score->status = $request->status;
             $score->save();
 
             return response()->json([
                 'status' => true,
+                'message' => "Score Successfully updated!",
                 'data' => $score
             ]);
         } catch (\Throwable $e) {
