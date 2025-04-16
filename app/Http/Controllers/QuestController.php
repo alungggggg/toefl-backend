@@ -147,7 +147,7 @@ class QuestController extends Controller
 
             return response()->json([
                 'status' => true,
-                'message' => 'Quest created successfully'
+                'message' => 'Quest edited successfully'
             ]);
         } catch (\Throwable $e) {
             return response()->json([
