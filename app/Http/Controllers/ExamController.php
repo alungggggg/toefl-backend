@@ -92,6 +92,7 @@ class ExamController extends Controller
 
     public function edit(Request $request)
     {
+        // return $request->all();
         try {
             $exam = ExamModel::find($request->uuid);
             $exam->name = $request->name;
@@ -103,7 +104,7 @@ class ExamController extends Controller
                 $bundler = new BundlerModel();
                 $bundler->uuid = Uuid::uuid4();
                 $bundler->id_exam = $request->uuid;
-                $bundler->id_quest = $bundle->id_quest;
+                $bundler->id_quest = $bundle["id_quest"];
                 $bundler->save();
             }
 
