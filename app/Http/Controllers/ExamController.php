@@ -99,6 +99,19 @@ class ExamController extends Controller
             $exam->expired = $request->expired;
             $exam->save();
 
+            foreach($request->bundler as $bundle) {
+                $bundler = new BundlerModel();
+                $bundler->uuid = Uuid::uuid4();
+                $bundler->id_exam = $request->uuid;
+                $bundler->id_quest = $bundle->id_quest;
+                $bundler->save();
+            }
+
+            return response()->json([
+                'status' => true,
+                'data' => $bundler
+            ]);            
+
             return response()->json([
                 'status' => true,
                 'data' => $exam

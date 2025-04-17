@@ -3,7 +3,6 @@
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\ExamController;
-
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\QuestController;
 use App\Http\Controllers\ScoreController;
@@ -20,10 +19,6 @@ use App\Http\Controllers\BundlerController;
 |
 */
 Route::post('/auth/sign-in', [AuthController::class, 'login']);
-
-
-
-
 
 // utility routes
 Route::middleware('auth:sanctum')->group(function () {
