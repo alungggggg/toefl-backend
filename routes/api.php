@@ -21,10 +21,7 @@ use App\Http\Controllers\BundlerController;
 */
 Route::post('/auth/sign-in', [AuthController::class, 'login']);
 
-Route::get('/score', [ScoreController::class, 'index']);
-Route::post('/score', [ScoreController::class, 'store']);
-Route::patch('/score', [ScoreController::class, 'edit']);
-Route::delete('/score', [ScoreController::class, 'destroy']);
+
 
 
 
@@ -51,7 +48,10 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::post('/exams/join', [ExamController::class, 'enterRoom']);
     Route::post('/exams/exit', [ExamController::class, 'exitRoom']);
 
-        
+    Route::get('/score', [ScoreController::class, 'index']);
+    Route::post('/score', [ScoreController::class, 'store']);
+    Route::patch('/score', [ScoreController::class, 'edit']);
+    Route::delete('/score', [ScoreController::class, 'destroy']);
 
     Route::post('/bundler', [BundlerController::class, 'store']);
     Route::delete('/bundler', [BundlerController::class, 'destroy']);
