@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Mar 23, 2025 at 03:08 PM
+-- Generation Time: Apr 17, 2025 at 05:49 AM
 -- Server version: 10.4.32-MariaDB
 -- PHP Version: 8.0.30
 
@@ -18,7 +18,7 @@ SET time_zone = "+00:00";
 /*!40101 SET NAMES utf8mb4 */;
 
 --
--- Database: `toefl-test`
+-- Database: `toefl`
 --
 
 -- --------------------------------------------------------
@@ -28,9 +28,17 @@ SET time_zone = "+00:00";
 --
 
 CREATE TABLE `bundler` (
+  `uuid` varchar(40) NOT NULL,
   `id_exam` varchar(40) NOT NULL,
   `id_quest` varchar(40) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Dumping data for table `bundler`
+--
+
+INSERT INTO `bundler` (`uuid`, `id_exam`, `id_quest`) VALUES
+('', '48eb6bc1-425d-45dc-88cd-f3b0fb9a', '66daa9d5-ddbd-4bf7-a25c-e27f19cc4a7d');
 
 -- --------------------------------------------------------
 
@@ -39,7 +47,7 @@ CREATE TABLE `bundler` (
 --
 
 CREATE TABLE `exam` (
-  `uuid` varchar(32) NOT NULL,
+  `uuid` varchar(40) NOT NULL,
   `name` varchar(255) NOT NULL,
   `code` varchar(8) NOT NULL,
   `access` timestamp NULL DEFAULT NULL,
@@ -70,9 +78,9 @@ CREATE TABLE `options` (
 --
 
 INSERT INTO `options` (`uuid`, `id_question`, `options`) VALUES
-('3c175f85-fc48-4f42-a6a0-0d79486160a3', '66daa9d5-ddbd-4bf7-a25c-e27f19cc4a7d', 'KEO'),
-('7dda17a5-e727-4530-8cb4-b150ab21753e', '66daa9d5-ddbd-4bf7-a25c-e27f19cc4a7d', 'EKO'),
-('d02cfee5-6d47-4463-97a9-9c451c34679f', '66daa9d5-ddbd-4bf7-a25c-e27f19cc4a7d', 'OKE');
+('477bc32e-cbe1-4f2b-b7e2-f3e7bfbb240c', '66daa9d5-ddbd-4bf7-a25c-e27f19cc4a7d', 'EKO'),
+('9dcd0b2d-666c-48bb-a1f4-12fb7f537574', '66daa9d5-ddbd-4bf7-a25c-e27f19cc4a7d', 'KEO edit'),
+('cc232ce1-28fe-4268-a411-c76faf06db52', '66daa9d5-ddbd-4bf7-a25c-e27f19cc4a7d', 'OKE');
 
 -- --------------------------------------------------------
 
@@ -98,7 +106,8 @@ CREATE TABLE `personal_access_tokens` (
 --
 
 INSERT INTO `personal_access_tokens` (`id`, `tokenable_type`, `tokenable_id`, `name`, `token`, `abilities`, `last_used_at`, `expires_at`, `created_at`, `updated_at`) VALUES
-(4, 'App\\Models\\User', 1232322, 'auth_token', '2c06b58625427d69436151d9ef7bfe496d4f46a544da20a0ba7e9d5b52cdae3b', '[\"*\"]', '2025-03-23 06:41:14', '2025-03-24 04:20:57', '2025-03-23 04:20:57', '2025-03-23 06:41:14');
+(4, 'App\\Models\\User', 1232322, 'auth_token', '2c06b58625427d69436151d9ef7bfe496d4f46a544da20a0ba7e9d5b52cdae3b', '[\"*\"]', '2025-03-23 07:56:40', '2025-03-24 04:20:57', '2025-03-23 04:20:57', '2025-03-23 07:56:40'),
+(5, 'App\\Models\\User', 1232322, 'auth_token', '0684261afb2709d8c1d4c98ed1378e7cb5062b4c950a064f97631330eb8630d3', '[\"*\"]', '2025-04-15 03:31:58', '2025-04-16 01:58:34', '2025-04-15 01:58:34', '2025-04-15 03:31:58');
 
 -- --------------------------------------------------------
 
@@ -120,7 +129,25 @@ CREATE TABLE `quests` (
 --
 
 INSERT INTO `quests` (`uuid`, `question`, `type`, `answer`, `options`, `weight`) VALUES
-('66daa9d5-ddbd-4bf7-a25c-e27f19cc4a7d', 'OKE', 'TEXT', 'OKE', '66daa9d5-ddbd-4bf7-a25c-e27f19cc4a7d', 10);
+('66daa9d5-ddbd-4bf7-a25c-e27f19cc4a', 'OKE', 'VOICE', 'OKE', '66daa9d5-ddbd-4bf7-a25c-e27f19cc4a7d', 10),
+('66daa9d5-ddbd-4bf7-a25c-e27f19cc4a7', 'OKE', 'TEXT', 'OKE', '66daa9d5-ddbd-4bf7-a25c-e27f19cc4a7d', 10),
+('66daa9d5-ddbd-4bf7-a25c-e27f19cc4a7d', 'OKE edit 1', 'TEXT', 'OKE', '66daa9d5-ddbd-4bf7-a25c-e27f19cc4a7d', 10);
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `score`
+--
+
+CREATE TABLE `score` (
+  `uuid` varchar(40) NOT NULL,
+  `username` varchar(155) NOT NULL,
+  `name` varchar(155) NOT NULL,
+  `score` int(11) NOT NULL,
+  `status` varchar(20) NOT NULL,
+  `created_at` timestamp NOT NULL DEFAULT current_timestamp(),
+  `updated_at` timestamp NOT NULL DEFAULT current_timestamp()
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 -- --------------------------------------------------------
 
@@ -146,6 +173,12 @@ INSERT INTO `users` (`id`, `name`, `username`, `password`, `exam`) VALUES
 --
 -- Indexes for dumped tables
 --
+
+--
+-- Indexes for table `bundler`
+--
+ALTER TABLE `bundler`
+  ADD PRIMARY KEY (`uuid`);
 
 --
 -- Indexes for table `exam`
@@ -176,6 +209,12 @@ ALTER TABLE `quests`
   ADD KEY `options` (`options`);
 
 --
+-- Indexes for table `score`
+--
+ALTER TABLE `score`
+  ADD PRIMARY KEY (`uuid`);
+
+--
 -- Indexes for table `users`
 --
 ALTER TABLE `users`
@@ -190,7 +229,7 @@ ALTER TABLE `users`
 -- AUTO_INCREMENT for table `personal_access_tokens`
 --
 ALTER TABLE `personal_access_tokens`
-  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
 
 --
 -- AUTO_INCREMENT for table `users`
