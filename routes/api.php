@@ -26,6 +26,8 @@ Route::post('/score', [ScoreController::class, 'store']);
 Route::patch('/score', [ScoreController::class, 'edit']);
 Route::delete('/score', [ScoreController::class, 'destroy']);
 
+
+
 // utility routes
 Route::middleware('auth:sanctum')->group(function () {
     
@@ -45,6 +47,10 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::post('/exams', [ExamController::class, 'store']);
     Route::delete('/exams', [ExamController::class, 'destroy']);
     Route::patch('/exams', [ExamController::class, 'edit']);
+
+    Route::post('/exams/join', [ExamController::class, 'enterRoom']);
+    Route::post('/exams/exit', [ExamController::class, 'exitRoom']);
+
         
 
     Route::post('/bundler', [BundlerController::class, 'store']);
