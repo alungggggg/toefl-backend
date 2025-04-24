@@ -92,7 +92,6 @@ class ExamController extends Controller
 
     public function edit(Request $request)
     {
-        // return $request->all();
         try {
             $exam = ExamModel::find($request->uuid);
             $exam->name = $request->name;

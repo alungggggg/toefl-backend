@@ -8,12 +8,25 @@ use Illuminate\Http\Request;
 
 class ScoreController extends Controller
 {
-    //
+
     public function index(Request $request)
     {
         try {
             if($request->id) {
                 $data = ScoreModel::find($request->id);
+                if(!$data) {
+                    return response()->json([
+                        'status' => false,
+                        'message' => 'Score not found'
+                    ], 404);
+                }
+                return response()->json([
+                    'status' => true,
+                    'data' => $data,
+                ]);
+            }
+            if($request->username){
+                $data = ScoreModel::where('username', $request->username)->get();
                 if(!$data) {
                     return response()->json([
                         'status' => false,
