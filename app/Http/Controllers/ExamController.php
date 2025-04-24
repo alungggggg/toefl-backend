@@ -1,7 +1,6 @@
 <?php
 
 namespace App\Http\Controllers;
-
 use App\Models\User;
 use Ramsey\Uuid\Uuid;
 use App\Models\ExamModel;
