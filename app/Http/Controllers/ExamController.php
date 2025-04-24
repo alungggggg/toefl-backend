@@ -35,7 +35,7 @@ class ExamController extends Controller
                     'code' => $exam->code,
                     'access' => $exam->access,
                     'expired' => $exam->expired,
-                    'bundler' => $exam->quest->map(function ($bundler) use ($exam) {
+                    'quest' => $exam->quest->map(function ($bundler) use ($exam) {
                         return [
                             $bundler->quest, 
                         ];
@@ -99,18 +99,19 @@ class ExamController extends Controller
             $exam->expired = $request->expired;
             $exam->save();
 
-            foreach($request->bundler as $bundle) {
-                $bundler = new BundlerModel();
-                $bundler->uuid = Uuid::uuid4();
-                $bundler->id_exam = $request->uuid;
-                $bundler->id_quest = $bundle["id_quest"];
-                $bundler->save();
-            }
+            if ($request->bundler && count($request->bundler) > 0) {
+                BundlerModel::where('id_exam', $exam->uuid)->delete();
+                foreach($request->bundler as $bundle) {
+                    $bundler = new BundlerModel();
+                    $bundler->uuid = Uuid::uuid4();
+                    $bundler->id_exam = $request->uuid;
+                    $bundler->id_quest = $bundle["id_quest"];
+                    $bundler->save();
+                } 
+            }else {
+                BundlerModel::where('id_exam', $exam->uuid)->delete();
+            }     
 
-            return response()->json([
-                'status' => true,
-                'data' => $bundler
-            ]);            
 
             return response()->json([
                 'status' => true,
