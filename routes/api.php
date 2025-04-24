@@ -50,6 +50,8 @@ Route::middleware('auth:sanctum')->group(function () {
 
     Route::post('/bundler', [BundlerController::class, 'store']);
     Route::delete('/bundler', [BundlerController::class, 'destroy']);
+
+    Route::get('/user/profile', [AuthController::class, 'profile']);
 });
 
 

@@ -24,4 +24,8 @@ public function login(Request $request){
         Auth::user()->tokens()->delete();
         return response()->json(['message' => 'Logged out'], 200);
     }
+
+    public function profile(){
+        return response()->json(['status' => true, 'data' => Auth::user()], 200);
+    }
 }
