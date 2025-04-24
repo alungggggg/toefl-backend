@@ -8,19 +8,8 @@ use App\Http\Controllers\QuestController;
 use App\Http\Controllers\ScoreController;
 use App\Http\Controllers\BundlerController;
 
-/*
-|--------------------------------------------------------------------------
-| API Routes
-|--------------------------------------------------------------------------
-|
-| Here is where you can register API routes for your application. These
-| routes are loaded by the RouteServiceProvider within a group which
-| is assigned the "api" middleware group. Enjoy building your API!
-|
-*/
-Route::post('/auth/sign-in', [AuthController::class, 'login']);
 
-// utility routes
+Route::post('/auth/sign-in', [AuthController::class, 'login']);
 Route::middleware('auth:sanctum')->group(function () {
     
     Route::get('/auth/sign-out', [AuthController::class, 'logout']);
@@ -30,8 +19,8 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::delete('/quests', [QuestController::class, 'destroy']);
     Route::patch('/quests', [QuestController::class, 'edit']);
     
-    Route::get('/users', [UserController::class, 'index']);
     Route::post('/users', [UserController::class, 'store']);
+    Route::get('/users', [UserController::class, 'index']);
     Route::delete('/users', [UserController::class, 'destroy']);    
     Route::patch('/users', [UserController::class, 'edit']);
 

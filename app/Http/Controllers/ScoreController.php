@@ -38,9 +38,12 @@ class ScoreController extends Controller
                     'data' => $data,
                 ]);
             }
+
             return response()->json([
                 'status' => true,
-                'data' => ScoreModel::all()
+                'data' => ScoreModel::all(),
+                'ata' => ScoreModel::where("id_exam", $request->id_exam)->get()
+                // "ok" => 
             ]);
         } catch (\Throwable $e) {
             return response()->json([

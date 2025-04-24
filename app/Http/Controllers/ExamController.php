@@ -2,9 +2,10 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\User;
 use Ramsey\Uuid\Uuid;
 use App\Models\ExamModel;
-use App\Models\User;
+use App\Models\ScoreModel;
 use App\Models\BundlerModel;
 use Illuminate\Http\Request;
 
@@ -42,6 +43,12 @@ class ExamController extends Controller
                     }),
                 ];
             });
+            if($request->id_exam){
+                return response()->json([
+                    'status' => "test",
+                    'data' => ScoreModel::where("id_exam", $request->id_exam)->get()
+                ]);
+            }
 
             return response()->json([
                 'status' => true,

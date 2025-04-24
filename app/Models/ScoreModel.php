@@ -20,4 +20,5 @@ class ScoreModel extends Model
         'score',
         'status',
     ];
+
 }
