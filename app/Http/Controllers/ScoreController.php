@@ -42,8 +42,6 @@ class ScoreController extends Controller
             return response()->json([
                 'status' => true,
                 'data' => ScoreModel::all(),
-                'ata' => ScoreModel::where("id_exam", $request->id_exam)->get()
-                // "ok" => 
             ]);
         } catch (\Throwable $e) {
             return response()->json([
@@ -58,6 +56,7 @@ class ScoreController extends Controller
         try {
             $score = new ScoreModel();
             $score->uuid = Uuid::uuid4();
+            $score->id_exam = $request->id_exam;
             $score->username = $request->username;
             $score->name = $request->name;
             $score->score = $request->score;
@@ -110,6 +109,7 @@ class ScoreController extends Controller
                 ], 404);
             }
             $score->username = $request->username;
+            $score->id_exam = $request->id_exam;
             $score->name = $request->name;
             $score->score = $request->score;
             $score->status = $request->status;

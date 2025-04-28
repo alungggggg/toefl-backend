@@ -7,7 +7,7 @@ use App\Http\Controllers\UserController;
 use App\Http\Controllers\QuestController;
 use App\Http\Controllers\ScoreController;
 use App\Http\Controllers\BundlerController;
-
+use App\Http\Controllers\RoomController;
 
 Route::post('/auth/sign-in', [AuthController::class, 'login']);
 Route::middleware('auth:sanctum')->group(function () {
@@ -29,8 +29,8 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::delete('/exams', [ExamController::class, 'destroy']);
     Route::patch('/exams', [ExamController::class, 'edit']);
 
-    Route::post('/exams/join', [ExamController::class, 'enterRoom']);
-    Route::post('/exams/exit', [ExamController::class, 'exitRoom']);
+    Route::post('/exams/join', [RoomController::class, 'enterRoom']);
+    Route::post('/exams/exit', [RoomController::class, 'exitRoom']);
 
     Route::get('/score', [ScoreController::class, 'index']);
     Route::post('/score', [ScoreController::class, 'store']);

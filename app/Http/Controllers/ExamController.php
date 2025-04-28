@@ -1,7 +1,6 @@
 <?php
 
 namespace App\Http\Controllers;
-use App\Models\User;
 use Ramsey\Uuid\Uuid;
 use App\Models\ExamModel;
 use App\Models\ScoreModel;
@@ -157,51 +156,5 @@ class ExamController extends Controller
         }
     }
 
-    public function enterRoom(Request $request)
-    {
-        try {
-            $exam = ExamModel::where('code', $request->code)->first();
-            if(!$exam){
-                return response()->json([
-                    'status' => false,
-                    'message' => 'Exam not found'
-                ], 404);
-            }
-
-
-            $user = User::find($request->user()->id);
-            $user->exam = $exam->uuid;
-            $user->save();
-
-            
-            return response()->json([
-                'status' => true,
-                'data' => $exam
-            ]);
-        } catch (\Throwable $e) {
-            return response()->json([
-                'status' => false,
-                'error' => $e->getMessage()
-            ], 500);
-        }
-    }
-
-    public function exitRoom(Request $request)
-    {
-        try{
-            $user = User::find($request->user()->id);
-            $user->exam = null;
-            $user->save();
-
-            return response()->json([
-                'status' => true,
-                'message' => 'You have exited the exam room'
-            ]);
-        }catch(\Throwable $e) {
-            return response()->json([
-                'status' => false,
-                'error' => $e->getMessage()
-            ], 500);
-        }
-    }
+    
 }

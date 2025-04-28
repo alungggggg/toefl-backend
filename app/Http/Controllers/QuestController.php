@@ -2,10 +2,11 @@
 
 namespace App\Http\Controllers;
 
+use Ramsey\Uuid\Uuid;
 use App\Models\QuestModel;
 use App\Models\OptionModel;
 use Illuminate\Http\Request;
-use Ramsey\Uuid\Uuid;
+use Illuminate\Support\Facades\File;
 
 class QuestController extends Controller
 {
@@ -71,7 +72,18 @@ class QuestController extends Controller
             
             $uuid = Uuid::uuid4();
             $quest->uuid = $uuid;
-            $quest->question = $request->question;
+
+            $question = $request->question;
+
+            if($request->file('question')) {
+                $question = $request->file('question'); 
+                $destinationPath = 'audio/';
+                $audio = date('YmdHis') . "." . $question->getClientOriginalExtension();
+                $question->move($destinationPath, $audio);
+                $question = $audio;
+            }
+
+            $quest->question = $question;
             $quest->type = $request->type;
             $quest->answer = $request->answer;
             $quest->weight = $request->weight;
@@ -130,15 +142,28 @@ class QuestController extends Controller
 
     public function edit(Request $request){
         try {
-            $quest = QuestModel::find($request->uuid);            
-            $quest->question = $request->question;
+            $quest = QuestModel::find($request->uuid);
+            $question = $request->question;
+            
+            if($quest->type == "audio" && $request->file('question')){       
+
+                    if (File::exists("audio/" . $quest['question'])) {
+                        File::delete("audio/" . $quest['question']);
+                    }
+
+                    $question = $request->file('question'); 
+                    $destinationPath = 'audio/';
+                    $audio = date('YmdHis') . "." . $question->getClientOriginalExtension();
+                    $question->move($destinationPath, $audio);
+                    $question = $audio;
+                
+            } 
             $quest->type = $request->type;
             $quest->answer = $request->answer;
             $quest->weight = $request->weight;
             $quest->save(); 
 
             OptionModel::where("id_question", $request->uuid)->delete();
-
 
             foreach ($request->options as $option) {
                 Self::optionEdit($request->uuid, $option["options"]);

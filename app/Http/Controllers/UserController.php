@@ -12,22 +12,10 @@ class UserController extends Controller
     public function store(Request $request){
 
         try{
-            $validator = Validator::make($request->all(), [
-                'name' => 'required|string|max:255',
-                'username' => 'required|string|max:255|unique:users,username,',
-                'password' => 'required|string|min:6',
-                'exam' => 'required|max:255',
-            ]);
-
-            if ($validator->fails()) {
-                return response()->json(['errors' => $validator->errors()], 422);
-            }
-            
             $user = new User();
             $user->name = $request->name;
             $user->username = $request->username;
             $user->password = Hash::make($request->password);
-            $user->exam = $request->exam;
             $user->save();
 
             return response()->json([
@@ -62,7 +50,6 @@ class UserController extends Controller
             $user->username = $request->username;
             $user->password = Hash::make($request->password);
             $user->role = $request->role;
-            $user->exam = $request->exam;
             $user->save();
 
             return response()->json([
