@@ -45,7 +45,6 @@ class QuestController extends Controller
 
             return response()->json([
                 'status' => true,
-                // 'data' => 
                 'data' => QuestModel::with("options")->get()
             ]);
         } catch (\Throwable $e) {
