@@ -21,6 +21,13 @@ class RoomController extends Controller
                 ], 404);
             }
 
+            if(RoomModel::where("id_user", $request->user()->id)->where("id_exam", $exam->uuid)->exists()) {
+                return response()->json([
+                    'status' => false,
+                    'message' => 'User already in room'
+                ], 409);
+            }
+
             $room = new RoomModel();
             $room->uuid = Uuid::uuid4();
             $room->id_exam = $exam->uuid;

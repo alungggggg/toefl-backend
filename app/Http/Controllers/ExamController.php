@@ -5,6 +5,7 @@ use Ramsey\Uuid\Uuid;
 use App\Models\ExamModel;
 use App\Models\ScoreModel;
 use App\Models\BundlerModel;
+use App\Models\RoomModel;
 use Illuminate\Http\Request;
 
 
@@ -13,6 +14,9 @@ class ExamController extends Controller
     public function index(Request $request)
     {
         try {
+
+            $data = ExamModel::with('quest.quest.options')->get();
+
             if($request->id) {
                 $exam = ExamModel::find($request->id);
                 $exam->reading = BundlerModel::where(['id_exam' => $exam->uuid] )->with(["quest", "quest.options"])->get("id_quest")->pluck("quest")->map(function($item){
@@ -38,14 +42,8 @@ class ExamController extends Controller
                         'message' => 'Exam not found'
                     ], 404);
                 }
-                return response()->json([
-                    'status' => true,
-                    'data' => $exam,
-                ]);
+                $data = $exam;
             }
-
-            $data = ExamModel::with('quest.quest.options')->get();
-
 
 
             if($request->id_exam){
@@ -54,10 +52,30 @@ class ExamController extends Controller
                     'data' => ScoreModel::where("id_exam", $request->id_exam)->get()
                 ]);
             }
+            if($request->id_user){
 
-            // return view('welcome', [
-            //     'data' => $data
-            // ]);
+                $id = RoomModel::where("id_user", $request->id_user)->get('id_exam')->pluck('id_exam');
+
+                $exam = ExamModel::where("uuid", $id)->first();
+                $exam->reading = BundlerModel::where(['id_exam' => $exam->uuid] )->with(["quest", "quest.options"])->get("id_quest")->pluck("quest")->map(function($item){
+                    if($item->type === "reading"){
+                        return $item;
+                    }
+                })->filter()->values();
+
+                $exam->listening = BundlerModel::where(['id_exam' => $exam->uuid] )->with(["quest", "quest.options"])->get("id_quest")->pluck("quest")->map(function($item){
+                    if($item->type === "listening"){
+                        return $item;
+                    }
+                })->filter()->values();
+                $exam->structure = BundlerModel::where(['id_exam' => $exam->uuid] )->with(["quest", "quest.options"])->get("id_quest")->pluck("quest")->map(function($item){
+                    if($item->type === "structure"){
+                        return $item;
+                    }
+                })->filter()->values();
+
+                $data = $exam;   
+            }
 
             return response()->json([
                 'status' => true,
