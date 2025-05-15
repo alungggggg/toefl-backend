@@ -51,7 +51,7 @@ class RoomController extends Controller
     {
         try{
             $user = RoomModel::where(["id_user" => $request->user()->id, "id_exam" => $request->id_exam])->first();
-            $user->exam = null;
+            $user->delete();
 
             return response()->json([
                 'status' => true,

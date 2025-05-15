@@ -1,14 +1,25 @@
 <?php
 
+use Illuminate\Support\Facades\Crypt;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\ExamController;
+use App\Http\Controllers\RoomController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\QuestController;
 use App\Http\Controllers\ScoreController;
 use App\Http\Controllers\BundlerController;
-use App\Http\Controllers\RoomController;
+use Illuminate\Http\Request;
 
+Route::get('/encrypt', function(Request $request) {
+    $encrypt = Crypt::encryptString($request->id);
+    return response()->json([
+        'status' => true,
+        'id' => $request->id,
+        'encrypt' => $encrypt,
+        'decrypt' => Crypt::decryptString($encrypt),
+    ]);
+});
 Route::post('/auth/sign-in', [AuthController::class, 'login']);
 Route::middleware('auth:sanctum')->group(function () {
     

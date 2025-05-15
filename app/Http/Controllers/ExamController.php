@@ -4,7 +4,6 @@ namespace App\Http\Controllers;
 use Ramsey\Uuid\Uuid;
 use App\Models\ExamModel;
 use App\Models\RoomModel;
-use App\Models\ScoreModel;
 use App\Models\BundlerModel;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Crypt;
@@ -21,7 +20,7 @@ class ExamController extends Controller
             if($request->id) {
                 $exam = ExamModel::find($request->id);
                 $exam->reading = BundlerModel::where(['id_exam' => $exam->uuid] )->with(["quest", "quest.options"])->get("id_quest")->pluck("quest")->map(function($item){
-                    if($item->type === "reading"){
+                    if($item->type === 'reading'){
                         return $item;
                     }
                 })->filter()->values();
@@ -43,7 +42,7 @@ class ExamController extends Controller
                         'message' => 'Exam not found'
                     ], 404);
                 }
-                $data = $exam;
+                $data = BundlerModel::where(['id_exam' => $exam->uuid] )->with(["quest", "quest.options"])->get("id_quest")->pluck("quest");
             }
 
 
