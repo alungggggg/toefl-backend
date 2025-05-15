@@ -37,7 +37,8 @@ public function login(Request $request){
                 'data' => [
                     'id' => Crypt::encryptString($user->id),
                     'name' => $user->name,
-                    'email' => $user->email,
+                    'username' => $user->username,
+                    'role' => $user->role,
                 ]
             ], 200);
     }
