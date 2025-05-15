@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Crypt;
 
 class AuthController extends Controller
 {
@@ -20,12 +21,24 @@ public function login(Request $request){
         return response()->json(['message' => 'Unauthorized'], 401);
     }
 
-    public function logout(){
-        Auth::user()->tokens()->delete();
+    public function logout(Request $request){
+        $user = $request->user();
+        if ($user && method_exists($user, 'tokens')) {
+            $user->tokens()->delete();
+        }
         return response()->json(['message' => 'Logged out'], 200);
     }
 
     public function profile(){
-        return response()->json(['status' => true, 'data' => Auth::user()], 200);
+        $user = Auth::user();
+        return response()->json(
+            [
+                'status' => true,
+                'data' => [
+                    'id' => Crypt::encryptString($user->id),
+                    'name' => $user->name,
+                    'email' => $user->email,
+                ]
+            ], 200);
     }
 }

@@ -3,10 +3,11 @@
 namespace App\Http\Controllers;
 use Ramsey\Uuid\Uuid;
 use App\Models\ExamModel;
+use App\Models\RoomModel;
 use App\Models\ScoreModel;
 use App\Models\BundlerModel;
-use App\Models\RoomModel;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Crypt;
 
 
 class ExamController extends Controller
@@ -46,15 +47,10 @@ class ExamController extends Controller
             }
 
 
-            if($request->id_exam){
-                return response()->json([
-                    'status' => "test",
-                    'data' => ScoreModel::where("id_exam", $request->id_exam)->get()
-                ]);
-            }
+
             if($request->id_user){
 
-                $id = RoomModel::where("id_user", $request->id_user)->get('id_exam')->pluck('id_exam');
+                $id = RoomModel::where("id_user", Crypt::decryptString($request->id_user))->get('id_exam')->pluck('id_exam');
 
                 $exam = ExamModel::where("uuid", $id)->first();
                 $exam->reading = BundlerModel::where(['id_exam' => $exam->uuid] )->with(["quest", "quest.options"])->get("id_quest")->pluck("quest")->map(function($item){
