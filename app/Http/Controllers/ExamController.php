@@ -14,9 +14,6 @@ class ExamController extends Controller
     public function index(Request $request)
     {
         try {
-
-            $data = ExamModel::with('quest.quest.options')->get();
-
             if($request->id) {
                 $exam = ExamModel::find($request->id);
                 $exam->reading = BundlerModel::where(['id_exam' => $exam->uuid] )->with(["quest", "quest.options"])->get("id_quest")->pluck("quest")->map(function($item){
@@ -43,13 +40,8 @@ class ExamController extends Controller
                     ], 404);
                 }
                 $data = BundlerModel::where(['id_exam' => $exam->uuid] )->with(["quest", "quest.options"])->get("id_quest")->pluck("quest");
-            }
-
-
-
-            if($request->id_user){
-
-                $id = RoomModel::where("id_user", Crypt::decryptString($request->id_user))->get('id_exam')->pluck('id_exam');
+            }else if($request->user()->role === "PESERTA"){
+                $id = RoomModel::where("id_user", $request->user()->id)->get('id_exam')->pluck('id_exam');
 
                 $exam = ExamModel::where("uuid", $id)->first();
                 $exam->reading = BundlerModel::where(['id_exam' => $exam->uuid] )->with(["quest", "quest.options"])->get("id_quest")->pluck("quest")->map(function($item){
@@ -70,7 +62,16 @@ class ExamController extends Controller
                 })->filter()->values();
 
                 $data = $exam;   
+            }else if($request->user()->role === "ADMIN"){
+                $data = ExamModel::with('quest.quest.options')->get();
+            }else{
+                return response()->json([
+                    'status' => false,
+                    'message' => 'Unauthorized'
+                ], 401);
             }
+
+
 
             return response()->json([
                 'status' => true,
