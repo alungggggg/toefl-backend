@@ -41,27 +41,58 @@ class ExamController extends Controller
                 }
                 $data = BundlerModel::where(['id_exam' => $exam->uuid] )->with(["quest", "quest.options"])->get("id_quest")->pluck("quest");
             }else if($request->user()->role === "PESERTA"){
-                $id = RoomModel::where("id_user", $request->user()->id)->get('id_exam')->pluck('id_exam');
+                $id = RoomModel::where("id_user", $request->user()->id)
+                    ->get('id_exam')
+                    ->pluck('id_exam');
+
+                if ($id->isEmpty()) {
+                    return response()->json(['message' => 'Data not found'], 200);
+                }
 
                 $exam = ExamModel::where("uuid", $id)->first();
-                $exam->reading = BundlerModel::where(['id_exam' => $exam->uuid] )->with(["quest", "quest.options"])->get("id_quest")->pluck("quest")->map(function($item){
-                    if($item->type === "reading"){
-                        return $item;
-                    }
-                })->filter()->values();
 
-                $exam->listening = BundlerModel::where(['id_exam' => $exam->uuid] )->with(["quest", "quest.options"])->get("id_quest")->pluck("quest")->map(function($item){
-                    if($item->type === "listening"){
-                        return $item;
-                    }
-                })->filter()->values();
-                $exam->structure = BundlerModel::where(['id_exam' => $exam->uuid] )->with(["quest", "quest.options"])->get("id_quest")->pluck("quest")->map(function($item){
-                    if($item->type === "structure"){
-                        return $item;
-                    }
-                })->filter()->values();
+                if (!$exam) {
+                    return response()->json(['message' => 'Exam not found'], 200);
+                }
 
-                $data = $exam;   
+                $exam->reading = BundlerModel::where(['id_exam' => $exam->uuid])
+                    ->with(["quest", "quest.options"])
+                    ->get("id_quest")
+                    ->pluck("quest")
+                    ->map(function($item){
+                        if($item->type === "reading"){
+                            return $item;
+                        }
+                    })
+                    ->filter()
+                    ->values();
+
+                $exam->listening = BundlerModel::where(['id_exam' => $exam->uuid])
+                    ->with(["quest", "quest.options"])
+                    ->get("id_quest")
+                    ->pluck("quest")
+                    ->map(function($item){
+                        if($item->type === "listening"){
+                            return $item;
+                        }
+                    })
+                    ->filter()
+                    ->values();
+
+                $exam->structure = BundlerModel::where(['id_exam' => $exam->uuid])
+                    ->with(["quest", "quest.options"])
+                    ->get("id_quest")
+                    ->pluck("quest")
+                    ->map(function($item){
+                        if($item->type === "structure"){
+                            return $item;
+                        }
+                    })
+                    ->filter()
+                    ->values();
+
+                $data = $exam;
+  
             }else if($request->user()->role === "ADMIN"){
                 $data = ExamModel::with('quest.quest.options')->get();
             }else{
